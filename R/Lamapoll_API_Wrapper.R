@@ -124,6 +124,6 @@ backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
   }
 
   else {
-    return("Oh no! You entered something wrong. Call for help!", "online")
+    return("Oh no! You entered something wrong. Call for help!")
   }
 }

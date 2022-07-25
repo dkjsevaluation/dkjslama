@@ -11,8 +11,9 @@
 #'  The function will also add one column to each datafile called "p_name" (i.e. "Programmname") , stating the name of the Lamapoll questionnaire.
 #' @param xdir The directory into which the function will download the data, i.e. your backup folder.
 #' @param ydir The directory that holds an excel file with one column, in which questionnaire names from Lamapoll are being pasted. \cr
+#' The directory has a maximum path length of ca. 80 characters due to MS Windows restrictions. With longer path names, the function will fail.
 #' You can use the function to download a selection of Lamapoll questionnaire data by specifying "selection" as status (xstatus) and creating an excel file with the dedicated questionnaire names in one column. \cr
-#' A directory has to be specified in the function, even when not utilizing the functions capability for the status "selection".
+#' A directory has to be specified in the function, even when not utilizing the functions capability for the status "selection". 
 #' @param apikey The personal API key, that Lamapoll created for the DKJS User Account.
 #' @return A folder that holds one excel file for each Lamapoll questionnaires with the specified status.
 #' @examples

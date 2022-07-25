@@ -11,4 +11,4 @@ LazyData: true
 Depends: R (>= 4.0), openxlsx, httr, jsonlite, curl, fs, openssl
 RoxygenNote: 7.2.1
 NeedsCompilation: no
-Packaged: 2022-07-24 09:42:13 UTC; Alex
+Packaged: 2022-07-25 18:14:37 UTC; Alex

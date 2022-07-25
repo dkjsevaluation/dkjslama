@@ -1,11 +1,11 @@
 #' Lamapoll Data Download
 #'
 #' This function Let's you download Data from Lamapoll through their API. Upon using, the package will create a folder in the path entered in the function (second parameter: "xdir"). The data will be stored in individual excel files for each questionnaire in this folder.
-#' @param xtatus The status of the Questionnaire in Lamapoll. You can enter three types of status. 
+#' @param xtatus The status of the Questionnaire in Lamapoll. You can enter three types of status.
 #' \itemize {
-#'     \item 1., "selection". This will download the data of selected Questionnaires. The names of the questionnaires have to be entered in an excel file, that is stored in the directory of (third parameter: "ydir"). 
-#'     \item 2., "online". This will download all data of all questionnaires, that are currently online. 
-#'     \item 3., "offline". This will download all data of all questionnaires, that are currently offline. 
+#'     \item 1., "selection". This will download the data of selected Questionnaires. The names of the questionnaires have to be entered in an excel file, that is stored in the directory of (third parameter: "ydir").
+#'     \item 2., "online". This will download all data of all questionnaires, that are currently online.
+#'     \item 3., "offline". This will download all data of all questionnaires, that are currently offline.
 #'     } \cr
 #'  The function will create a subfolder for each type of status and save the data in a subfolder in the directory stated in xdir. \cr
 #'  The function will also add one column to each datafile called "p_name" (i.e. "Programmname") , stating the name of the Lamapoll questionnaire.
@@ -13,7 +13,7 @@
 #' @param ydir The directory that holds an excel file with one column, in which questionnaire names from Lamapoll are being pasted. \cr
 #' The directory has a maximum path length of ca. 80 characters due to MS Windows restrictions. With longer path names, the function will fail.
 #' You can use the function to download a selection of Lamapoll questionnaire data by specifying "selection" as status (xstatus) and creating an excel file with the dedicated questionnaire names in one column. \cr
-#' A directory has to be specified in the function, even when not utilizing the functions capability for the status "selection". 
+#' A directory has to be specified in the function, even when not utilizing the functions capability for the status "selection".
 #' @param apikey The personal API key, that Lamapoll created for the DKJS User Account.
 #' @return A folder that holds one excel file for each Lamapoll questionnaires with the specified status.
 #' @examples

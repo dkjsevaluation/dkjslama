@@ -8,7 +8,7 @@
 #' @param apikey The personal API key, that Lamapoll created for you.
 #' @return An object of class dataframe.
 #' @examples
-#' downloaded_data <- get_lamapoll_data <-function("duck@pond.com", "duckpoll", "xyz1234")
+#' downloaded_data <- get.lamapoll.data <-function("duck@pond.com", "duckpoll", "xyz1234")
 #' @import openxlsx
 #' @import httr
 #' @import jsonlite
@@ -16,7 +16,7 @@
 #' @import openssl
 #' @export
 
-get_lamapoll_data <-function(email, poll_name, apikey){
+get.lamapoll.data <-function(email, poll_name, apikey){
 
   # request authorization
   authorization_query <-paste0("https://api.lamapoll.de/api.php?task=requestAuth&user=", email)
@@ -53,7 +53,7 @@ get_lamapoll_data <-function(email, poll_name, apikey){
 #' @param apikey The personal API key, that Lamapoll created for you.
 #' @return An object of class dataframe.
 #' @examples
-#' downloaded_names <- get_lamapoll_list <-function("duck@pond.com", "duckpoll", "xyz1234")
+#' downloaded_names <- get.lamapoll.list <-function("duck@pond.com", "duckpoll", "xyz1234")
 #' @import openxlsx
 #' @import httr
 #' @import jsonlite
@@ -61,7 +61,7 @@ get_lamapoll_data <-function(email, poll_name, apikey){
 #' @import openssl
 #' @export
 
-get_lamapoll_list <-function(email, fb_status, apikey){
+get.lamapoll.list <-function(email, fb_status, apikey){
 
 # request authorization
 authorization_query <-paste0("https://api.lamapoll.de/api.php?task=requestAuth&user=", "lamapoll@dkjs.de")

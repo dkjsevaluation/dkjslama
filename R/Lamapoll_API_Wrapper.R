@@ -1,13 +1,25 @@
 #' Lamapoll Data Download
 #'
 #' This function Let's you download Data from Lamapoll through their API. Upon using, the package will create a folder in the path entered in the function (second parameter: "xdir"). The data will be stored in individual excel files for each questionnaire in this folder.
-#' @param xtatus The status of the Questionnaire in Lamapoll. You can enter three types of status. 1., "selection". This will download the data of selected Questionnaires. The names of the questionnaires have to be entered in an excel file. Please ask Team W&E for further instructions. 2., "online". This will download all data of all questionnaires, that are currently online. 3., "offline". This will download all data of all questionnaires, that are currently offline. The package will create a subfolder for each type of status and save the data in the appropriate subfolder. The function will add one column to each datafile called "p_name", stating the name of the Lamapoll questionnaire.
+#' @param xtatus The status of the Questionnaire in Lamapoll. You can enter three types of status.
+#' \itemize {
+#'     \item 1., "selection". This will download the data of selected Questionnaires. The names of the questionnaires have to be entered in an excel file, that is stored in the directory of (third parameter: "ydir").
+#'     \item 2., "online". This will download all data of all questionnaires, that are currently online.
+#'     \item 3., "offline". This will download all data of all questionnaires, that are currently offline.
+#'     } \cr
+#'  The function will create a subfolder for each type of status and save the data in a subfolder in the directory stated in xdir. \cr
+#'  The function will also add one column to each datafile called "p_name" (i.e. "Programmname") , stating the name of the Lamapoll questionnaire.
 #' @param xdir The directory into which the function will download the data, i.e. your backup folder.
-#' @param ydir The directory that holds an excel file with one column, in which questionnaire names from Lamapoll are being pasted. You can use the function to download a selection of Lamapoll questionnaire data by specifying "selection" as status (xstatus) and creating an excel file with the dedicated questionnaire names in one column.
+#' @param ydir The directory that holds an excel file with one column, in which questionnaire names from Lamapoll are being pasted. \cr
+#' The directory has a maximum path length of ca. 80 characters due to MS Windows restrictions. With longer path names, the function will fail.
+#' You can use the function to download a selection of Lamapoll questionnaire data by specifying "selection" as status (xstatus) and creating an excel file with the dedicated questionnaire names in one column. \cr
+#' A directory has to be specified in the function, even when not utilizing the functions capability for the status "selection".
 #' @param apikey The personal API key, that Lamapoll created for the DKJS User Account.
-#' @return A folder that holds one excel file for each Lamapoll questionnaires with the specified status (xstatus).
+#' @return A folder that holds one excel file for each Lamapoll questionnaires with the specified status.
 #' @examples
-#' backup.lamapoll <- function("online", "...Data/Backup/", "...Data/Programmliste.xslx", "xyz123")
+#' backup.lamapoll("online", "...Data/Backup/", "...Data/Programmliste.xslx", "xyz123") \cr
+#' ## Running this command will first internally generate a list of all questionnaires in Lamapoll, that are marked as online. \cr
+#' ## Then download all datafiles from these questionnaires. Then create a backupfolder to save these datafiles in. Then save these datafiles as individual .xlsx files.
 #' @import openxlsx
 #' @import httr
 #' @import fs
@@ -18,7 +30,7 @@
 
 backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
 
-  get_lamapoll_list <-function(email, fb_status, apikey){
+  get.lamapoll.list <-function(email, fb_status, apikey){
 
     # request authorization
     authorization_query <-paste0("https://api.lamapoll.de/api.php?task=requestAuth&user=", "lamapoll@dkjs.de")
@@ -44,7 +56,7 @@ backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
     return(df_fb_names)
   }
 
-  get_lamapoll_data <-function(email, poll_name, apikey){
+  get.lamapoll.data <-function(email, poll_name, apikey){
 
     # request authorization
     authorization_query <-paste0("https://api.lamapoll.de/api.php?task=requestAuth&user=", email)
@@ -78,11 +90,11 @@ backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
 
   if (xstatus == "online" || xstatus == "offline") {
 
-    fb_names <- as.data.frame(get_lamapoll_list("lamapoll@dkjs.de", xstatus, apikey))
+    fb_names <- as.data.frame(get.lamapoll.list("lamapoll@dkjs.de", xstatus, apikey))
     names(fb_names)[1] <- "fb_names"
     list_status <- as.list(fb_names$fb_names)
 
-    p_list_df_status <- lapply(list_status, function (x) get_lamapoll_data("lamapoll@dkjs.de", x, apikey))
+    p_list_df_status <- lapply(list_status, function (x) get.lamapoll.data("lamapoll@dkjs.de", x, apikey))
     names(p_list_df_status) <- list_status
     names(list_status) <- list_status
     p_list_df_status <- p_list_df_status[sapply(p_list_df_status, nrow)>0]
@@ -102,7 +114,7 @@ backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
 
   else if (xstatus == "selection") {
 
-    p_list_df <- lapply(p_list, function (x) get_lamapoll_data("lamapoll@dkjs.de", x, apikey))
+    p_list_df <- lapply(p_list, function (x) get.lamapoll.data("lamapoll@dkjs.de", x, apikey))
     names(p_list_df) <- p_list
     names(p_list) <- p_list
     p_list_df <- p_list_df[sapply(p_list_df, nrow)>0]
@@ -124,6 +136,6 @@ backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
   }
 
   else {
-    return("Oh no! You entered something wrong. Call for help!", "online")
+    return("Oh no! You entered something wrong. Call for help!")
   }
 }

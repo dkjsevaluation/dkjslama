@@ -18,7 +18,7 @@
 
 backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
 
-  get_lamapoll_list <-function(email, fb_status, apikey){
+  get.lamapoll.list <-function(email, fb_status, apikey){
 
     # request authorization
     authorization_query <-paste0("https://api.lamapoll.de/api.php?task=requestAuth&user=", "lamapoll@dkjs.de")
@@ -44,7 +44,7 @@ backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
     return(df_fb_names)
   }
 
-  get_lamapoll_data <-function(email, poll_name, apikey){
+  get.lamapoll.data <-function(email, poll_name, apikey){
 
     # request authorization
     authorization_query <-paste0("https://api.lamapoll.de/api.php?task=requestAuth&user=", email)
@@ -78,11 +78,11 @@ backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
 
   if (xstatus == "online" || xstatus == "offline") {
 
-    fb_names <- as.data.frame(get_lamapoll_list("lamapoll@dkjs.de", xstatus, apikey))
+    fb_names <- as.data.frame(get.lamapoll.list("lamapoll@dkjs.de", xstatus, apikey))
     names(fb_names)[1] <- "fb_names"
     list_status <- as.list(fb_names$fb_names)
 
-    p_list_df_status <- lapply(list_status, function (x) get_lamapoll_data("lamapoll@dkjs.de", x, apikey))
+    p_list_df_status <- lapply(list_status, function (x) get.lamapoll.data("lamapoll@dkjs.de", x, apikey))
     names(p_list_df_status) <- list_status
     names(list_status) <- list_status
     p_list_df_status <- p_list_df_status[sapply(p_list_df_status, nrow)>0]
@@ -102,7 +102,7 @@ backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
 
   else if (xstatus == "selection") {
 
-    p_list_df <- lapply(p_list, function (x) get_lamapoll_data("lamapoll@dkjs.de", x, apikey))
+    p_list_df <- lapply(p_list, function (x) get.lamapoll.data("lamapoll@dkjs.de", x, apikey))
     names(p_list_df) <- p_list
     names(p_list) <- p_list
     p_list_df <- p_list_df[sapply(p_list_df, nrow)>0]

@@ -7,9 +7,9 @@
 get.lamapoll.data(email, poll_name, apikey)
 }
 \arguments{
-\item{email}{The mailadress that you are registered with in Lamapoll.}
-
 \item{poll_name}{The name of the questionnaire in Lamapoll, from which you want to download the data.}
+
+\item{email}{The mailadress that you are registered with in Lamapoll.}
 
 \item{apikey}{The personal API key, that Lamapoll created for you.}
 }
@@ -20,5 +20,5 @@ An object of class dataframe.
 This function Let's you download Data of one questionnaire from Lamapoll through their API. The result of the function is an object of class dataframe.
 }
 \examples{
-downloaded_data <- get.lamapoll.data <-function("duck@pond.com", "duckpoll", "xyz1234")
+downloaded_data <- get.lamapoll.data <-function("duckpoll", "duck@pond.com", "xyz1234")
 }

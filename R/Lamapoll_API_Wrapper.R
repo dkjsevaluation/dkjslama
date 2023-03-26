@@ -18,9 +18,9 @@
 #' @param apikey The personal API key, that Lamapoll created for the DKJS User Account.
 #' @return A folder that holds one excel file for each Lamapoll questionnaires with the specified status.
 #' @examples
-#' backup.lamapoll("online", "...Data/Backup/", "...Data/Programmliste.xslx", "xyz123") \cr
+#' backup.lamapoll("online", "...Data/Backup/", "...Data/Programmliste.xslx", "duck@lamapoll.de", "xyz123") \cr
 #' ## Running this command will first internally generate a list of all questionnaires in Lamapoll, that are marked as online. \cr
-#' ## Then download all datafiles from these questionnaires. Then create a backupfolder to save these datafiles in. Then save these datafiles as individual .xlsx files.
+#' ## Then download all datafiles from these questionnaires into the Computers RAM. Then create a backupfolder to save these datafiles in. Then save these datafiles as individual .xlsx files.
 #' @import openxlsx
 #' @import httr
 #' @import fs

@@ -4,13 +4,13 @@
 \alias{get.lamapoll.list}
 \title{Lamapoll Questionnaire List Download}
 \usage{
-get.lamapoll.list(email, fb_status, apikey)
+get.lamapoll.list(xstatus, email, apikey)
 }
 \arguments{
+\item{xstatus}{The status of the questionnaires of which you want all names. Can be set to "online" or "offline" or "inwork".}
+
 \item{email}{The mailadress that you are registered with in Lamapoll.}
-
-\item{fb_status}{The status of the questionnaires of which you want all names. Can be set to "online" or "offline" or "inwork".}
-
+  
 \item{apikey}{The personal API key, that Lamapoll created for you.}
 }
 \value{
@@ -20,5 +20,5 @@ An object of class dataframe.
 This function Let's you download a list of questionnaire names from Lamapoll through their API. The result of the function is an object of class dataframe.
 }
 \examples{
-downloaded_names <- get.lamapoll.list <-function("duck@pond.com", "duckpoll", "xyz1234")
+downloaded_names <- get.lamapoll.list <-function("duckpoll", "duck@pond.com", "xyz1234")
 }

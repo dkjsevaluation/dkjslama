@@ -28,12 +28,12 @@
 #' @import openssl
 #' @export
 
-backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
+backup.lamapoll <- function(xstatus, xdir, ydir, email, apikey) {
 
   get.lamapoll.list <-function(email, fb_status, apikey){
 
     # request authorization
-    authorization_query <-paste0("https://api.lamapoll.de/api.php?task=requestAuth&user=", "we@dkjs.de")
+    authorization_query <-paste0("https://api.lamapoll.de/api.php?task=requestAuth&user=", email)
     authorization <- curl::curl_fetch_memory(authorization_query)
     authorization_result <- jsonlite::fromJSON(rawToChar(authorization$content))
     if (authorization_result$code !="200") stop(paste0("Error in authorization request: ", authorization_result$code))
@@ -41,7 +41,7 @@ backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
     user_token <- openssl::sha256(paste0(auth_token, apikey))
 
     # authorize
-    authorize_query <-paste0("https://api.lamapoll.de/api.php", "?", "task=authorize&user=", "we@dkjs.de", "&userToken=", user_token)
+    authorize_query <-paste0("https://api.lamapoll.de/api.php", "?", "task=authorize&user=", email, "&userToken=", user_token)
     final_auth <- curl::curl_fetch_memory(authorize_query)
     final_result <- jsonlite::fromJSON(rawToChar(final_auth$content))
     if (final_result$code !="200") stop(paste0("Error in authorization: ", final_result$code))
@@ -49,17 +49,17 @@ backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
     requestToken <- final_result$requestToken
     api_token <- openssl::sha256(paste0(requestToken, apikey))
     # get data
-    get_data_query <-paste0("https://api.lamapoll.de/api.php", "?", "task=listPolls&status=", fb_status, "&apiToken=", api_token, "&user=", "we@dkjs.de")
+    get_data_query <-paste0("https://api.lamapoll.de/api.php", "?", "task=listPolls&status=", fb_status, "&apiToken=", api_token, "&user=", email)
     fetch_data <- curl::curl_fetch_memory(get_data_query)
     data_result <- jsonlite::fromJSON(rawToChar(fetch_data$content))
     df_fb_names <- data_result$items
     return(df_fb_names)
   }
 
-  get.lamapoll.data <-function(poll_name, apikey){
+  get.lamapoll.data <-function(poll_name, email, apikey){
 
     # request authorization
-    authorization_query <-paste0("https://api.lamapoll.de/api.php?task=requestAuth&user=", "we@dkjs.de")
+    authorization_query <-paste0("https://api.lamapoll.de/api.php?task=requestAuth&user=", email)
     authorization <- curl::curl_fetch_memory(authorization_query)
     authorization_result <- jsonlite::fromJSON(rawToChar(authorization$content))
     if (authorization_result$code !="200") stop(paste0("Error in authorization request: ", authorization_result$code))
@@ -67,7 +67,7 @@ backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
     user_token <- openssl::sha256(paste0(auth_token, apikey))
 
     # authorize
-    authorize_query <-paste0("https://api.lamapoll.de/api.php", "?", "task=authorize&user=", "we@dkjs.de", "&userToken=", user_token)
+    authorize_query <-paste0("https://api.lamapoll.de/api.php", "?", "task=authorize&user=", email, "&userToken=", user_token)
     final_auth <- curl::curl_fetch_memory(authorize_query)
     final_result <- jsonlite::fromJSON(rawToChar(final_auth$content))
     if (final_result$code !="200") stop(paste0("Error in authorization: ", final_result$code))
@@ -76,7 +76,7 @@ backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
     api_token <- openssl::sha256(paste0(requestToken, apikey))
 
     # get data
-    get_data_query <-paste0("https://api.lamapoll.de/api.php", "?", "task=getResults&type=csv&pollName=", poll_name, "&apiToken=", api_token, "&user=", "we@dkjs.de")
+    get_data_query <-paste0("https://api.lamapoll.de/api.php", "?", "task=getResults&type=csv&pollName=", poll_name, "&apiToken=", api_token, "&user=", email)
     fetch_data <- curl::curl_fetch_memory(get_data_query)
     data_result <- jsonlite::fromJSON(rawToChar(fetch_data$content))
     if (data_result$code !="200") stop(paste0("Error in data request: ", data_result$code))
@@ -90,11 +90,11 @@ backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
 
   if (xstatus == "online" || xstatus == "offline") {
 
-    fb_names <- as.data.frame(get.lamapoll.list("we@dkjs.de", xstatus, apikey))
+    fb_names <- as.data.frame(get.lamapoll.list(email, xstatus, apikey))
     names(fb_names)[1] <- "fb_names"
     list_status <- as.list(fb_names$fb_names)
 
-    p_list_df_status <- lapply(list_status, function (x) get.lamapoll.data("we@dkjs.de", x, apikey))
+    p_list_df_status <- lapply(list_status, function (x) get.lamapoll.data(email, x, apikey))
     names(p_list_df_status) <- list_status
     names(list_status) <- list_status
     p_list_df_status <- p_list_df_status[sapply(p_list_df_status, nrow)>0]
@@ -114,7 +114,7 @@ backup.lamapoll <- function(xstatus, xdir, ydir, apikey) {
 
   else if (xstatus == "selection") {
 
-    p_list_df <- lapply(p_list, function (x) get.lamapoll.data("we@dkjs.de", x, apikey))
+    p_list_df <- lapply(p_list, function (x) get.lamapoll.data(email, x, apikey))
     names(p_list_df) <- p_list
     names(p_list) <- p_list
     p_list_df <- p_list_df[sapply(p_list_df, nrow)>0]
